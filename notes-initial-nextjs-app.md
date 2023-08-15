@@ -4,6 +4,10 @@
 
 https://rickandmortyapi.com/api/character
 
+## Pages and Layout
+
+You can extract the params from pages and layout
+
 ## Prisma setup
 
 set DATABASE_URL in .env
