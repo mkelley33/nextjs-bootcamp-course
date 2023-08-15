@@ -27,6 +27,9 @@ searchParams: { city: string; cuisine: string; price: PRICE };
 set DATABASE_URL in .env
 
 Create schema.prisma in prisma directory you must create at the root level of your project.
+This is where your models go.
+
+npx prisma db push will update your database with models
 
 npx prisma init
 npx prisma db push
