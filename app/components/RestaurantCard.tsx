@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { IRestaurantCard } from '../page';
 import Price from './Price';
+import Stars from './Stars';
 
 interface IProps {
   restaurant: IRestaurantCard;
 }
 
 export default function RestaurantCard({ restaurant }: IProps) {
-  const { id, name, main_image, cuisine, location, price, slug, reviews } =
+  const { name, main_image, cuisine, location, price, slug, reviews } =
     restaurant;
   return (
     <div className="w-64 h-72 m-3 rounded overflow-hidden border cursor-pointer">
@@ -16,7 +17,7 @@ export default function RestaurantCard({ restaurant }: IProps) {
         <div className="p-1">
           <h3 className="font-bold text-2xl mb-2">{name}</h3>
           <div className="flex items-start">
-            <div className="flex mb-2">*****</div>
+            <Stars reviews={reviews} />
             <p className="ml-2">
               {reviews.length} review{reviews.length === 1 ? '' : 's'}
             </p>
