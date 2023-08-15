@@ -5,12 +5,18 @@ import Image from 'next/image';
 import { Review } from '@prisma/client';
 import { calculateReviewRatingAverage } from '../../utils/calculateReviewRatingAverage';
 
-export default function Stars({ reviews }: { reviews: Review[] }) {
-  const rating = calculateReviewRatingAverage(reviews);
+export default function Stars({
+  reviews,
+  rating,
+}: {
+  reviews: Review[];
+  rating?: number;
+}) {
+  const reviewRating = rating || calculateReviewRatingAverage(reviews);
   const renderStars = () => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
-      const difference = parseFloat((rating - i).toFixed(1));
+      const difference = parseFloat((reviewRating - i).toFixed(1));
       if (difference >= 1) stars.push(fullStar);
       else if (difference < 1 && difference > 0) {
         if (difference <= 0.2) stars.push(emptyStar);
@@ -19,8 +25,8 @@ export default function Stars({ reviews }: { reviews: Review[] }) {
       } else stars.push(emptyStar);
     }
 
-    return stars.map((star) => (
-      <Image src={star} alt="" className="w-4 h-4 mr-1" />
+    return stars.map((star, index) => (
+      <Image key={index} src={star} alt="" className="w-4 h-4 mr-1" />
     ));
   };
   return <div className="flex items-center">{renderStars()}</div>;
