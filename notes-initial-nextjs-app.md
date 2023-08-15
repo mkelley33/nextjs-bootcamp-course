@@ -8,6 +8,20 @@ https://rickandmortyapi.com/api/character
 
 You can extract the params from pages and layout
 
+## Search params
+
+```js
+// As a prop type searchParams this way
+searchParams: { city: string; cuisine: string; price: PRICE };
+
+// Spread searchParams so that they don't get replaced each time you click a link
+<Link
+  href={{
+    pathname: '/search',
+    query: { ...searchParams, city: location.name }, // replace city value, but not other search params
+  }}
+```
+
 ## Prisma setup
 
 set DATABASE_URL in .env
