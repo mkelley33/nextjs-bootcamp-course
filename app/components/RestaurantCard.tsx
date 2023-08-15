@@ -7,7 +7,8 @@ interface IProps {
 }
 
 export default function RestaurantCard({ restaurant }: IProps) {
-  const { id, name, main_image, cuisine, location, price, slug } = restaurant;
+  const { id, name, main_image, cuisine, location, price, slug, reviews } =
+    restaurant;
   return (
     <div className="w-64 h-72 m-3 rounded overflow-hidden border cursor-pointer">
       <Link href={`/restaurant/${slug}`}>
@@ -16,7 +17,9 @@ export default function RestaurantCard({ restaurant }: IProps) {
           <h3 className="font-bold text-2xl mb-2">{name}</h3>
           <div className="flex items-start">
             <div className="flex mb-2">*****</div>
-            <p className="ml-2">77 reviews</p>
+            <p className="ml-2">
+              {reviews.length} review{reviews.length === 1 ? '' : 's'}
+            </p>
           </div>
           <div className="flex text-reg font-light capitalize">
             <p className=" mr-3">{cuisine.name}</p>
