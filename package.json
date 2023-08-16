@@ -9,17 +9,27 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.5",
     "@next/font": "13.1.4",
     "@prisma/client": "4.8.1",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
+    "bcrypt": "^5.1.1",
+    "jose": "^4.14.4",
+    "jsonwebtoken": "^9.0.1",
     "next": "13.1.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "4.9.4"
+    "typescript": "4.9.4",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^10.0.28-alpha",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/validator": "^13.11.1",
     "autoprefixer": "10.4.13",
     "postcss": "8.4.20",
     "prisma": "4.8.1",
