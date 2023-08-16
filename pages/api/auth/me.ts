@@ -20,7 +20,11 @@ export default async function handler(
     where: { email: payload.email },
   })) as Partial<User>;
 
+  if (!user) {
+    return res.status(401).json({ errorMessage: 'User not found' });
+  }
+
   delete user.password;
 
-  return res.json({ user });
+  return res.json({ ...user });
 }

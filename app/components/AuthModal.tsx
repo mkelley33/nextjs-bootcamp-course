@@ -22,13 +22,11 @@ const style = {
 };
 
 export default function AuthModal({ isSignin }: { isSignin: boolean }) {
-  const { error, loading, data, setAuthState } = useContext(
-    AuthenticationContext
-  );
+  const { error, loading, data } = useContext(AuthenticationContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { signin } = useAuth();
+  const { signin, signup } = useAuth();
 
   const [inputs, setInputs] = useState({
     firstName: '',
@@ -65,10 +63,11 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
   }, [inputs]);
 
   const handleClick = () => {
-    const { password, email, firstName, lastName, city, phone } = inputs;
-
+    const { password, email } = inputs;
     if (isSignin) {
       signin({ email, password, handleClose });
+    } else {
+      signup({ ...inputs, handleClose });
     }
   };
 
@@ -104,6 +103,9 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
               <div className="uppercase font-bold text-center pb-2 border-b mb-2">
                 <p id="modal-modal-title" className="text-sm">
                   {renderContent('Sign In', 'Create Account')}
+                </p>
+                <p>
+                  {data?.firstName} {data?.lastName}
                 </p>
               </div>
               <div className="m-auto">
