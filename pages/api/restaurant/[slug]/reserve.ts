@@ -9,11 +9,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { slug, day, time, partySize } = req.query as {
+  const { slug, day, time } = req.query as {
     slug: string;
     day: string;
     time: string;
-    partySize: string;
   };
 
   const restaurant = await prisma.restaurant.findUnique({
