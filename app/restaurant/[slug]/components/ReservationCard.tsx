@@ -24,9 +24,6 @@ export default function ReservationCard({
     const timesWithinWindow: typeof times = [];
     let isWithinWindow = false;
     times.forEach((time) => {
-      console.log(time);
-      console.log(openTime);
-      console.log(closeTime);
       if (time.time === openTime) {
         isWithinWindow = true;
       }
