@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { times } from '../../../../data';
+import getInvalidDataResponse from '../../../../utils/getInvalidResponse';
 
 const prisma = new PrismaClient();
 
@@ -8,12 +9,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  function getInvalidDataResponse(res: NextApiResponse) {
-    return res.status(400).json({
-      errorMessage: 'Invalid data provided',
-    });
-  }
-
   const { slug, day, time, partySize } = req.query as {
     slug: string;
     day: string;
