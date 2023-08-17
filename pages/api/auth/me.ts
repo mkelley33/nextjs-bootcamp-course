@@ -18,13 +18,11 @@ export default async function handler(
 
   const user = (await prisma.user.findUnique({
     where: { email: payload.email },
-  })) as Partial<User>;
+  })) as Omit<User, 'password'>;
 
   if (!user) {
     return res.status(401).json({ errorMessage: 'User not found' });
   }
-
-  delete user.password;
 
   return res.json({ ...user });
 }
