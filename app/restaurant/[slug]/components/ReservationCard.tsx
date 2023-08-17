@@ -1,23 +1,36 @@
 'use client';
 
-import { partySize, times } from '../../../../data';
+import { partySize as partySizes, times } from '../../../../data';
 import DatePicker from 'react-datepicker';
 import { useState } from 'react';
-
+import useAvailabilities from '../../../../pages/api/hooks/useAvailabilities';
+import { CircularProgress } from '@mui/material';
 export default function ReservationCard({
   openTime,
   closeTime,
+  slug,
 }: {
   openTime: string;
   closeTime: string;
+  slug: string;
 }) {
+  const { data, loading, error, fetchAvailabilities } = useAvailabilities();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [time, setTime] = useState(openTime);
+  const [partySize, setPartySize] = useState('2');
+  const [day, setDay] = useState(new Date().toISOString().split('T')[0]);
+
   const handleChangeDate = (date: Date | null) => {
     if (date) {
+      setDay(date.toISOString().split('T')[0]);
       return setSelectedDate(date);
     } else {
       setSelectedDate(null);
     }
+  };
+
+  const handleFetchAvailabilities = () => {
+    fetchAvailabilities({ slug, day, time, partySize });
   };
 
   const filterTimesByRestaurantOpenWindow = () => {
@@ -43,9 +56,15 @@ export default function ReservationCard({
         <h4 className="mr-7 text-lg">Make a Reservation</h4>
       </div>
       <div className="my-3 flex flex-col">
-        <label htmlFor="">Party size</label>
-        <select name="" className="py-3 border-b font-light" id="">
-          {partySize.map((size) => (
+        <label htmlFor="partySize">Party size</label>
+        <select
+          name="partySize"
+          className="py-3 border-b font-light"
+          id="partySize"
+          value={partySize}
+          onChange={(e) => setPartySize(e.target.value)}
+        >
+          {partySizes.map((size) => (
             <option key={size.value} value={size.value}>
               {size.label}
             </option>
@@ -54,8 +73,9 @@ export default function ReservationCard({
       </div>
       <div className="flex justify-between">
         <div className="flex flex-col w-[48%]">
-          <label htmlFor="">Date</label>
+          <label htmlFor="selectedDate">Date</label>
           <DatePicker
+            id="selectedDate"
             selected={selectedDate}
             onChange={handleChangeDate}
             className="py-3 border-b font-light text-reg w-24"
@@ -66,9 +86,11 @@ export default function ReservationCard({
         <div className="flex flex-col w-[48%]">
           <label htmlFor="">Time</label>
           <select
-            name=""
-            id=""
+            name="availabilityTime"
+            id="availabilityTime"
             className="py-[13.5px] border-b text-reg font-light"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
           >
             {filterTimesByRestaurantOpenWindow().map((time) => (
               <option key={time.time} value={time.time}>
@@ -79,8 +101,11 @@ export default function ReservationCard({
         </div>
       </div>
       <div className="mt-5">
-        <button className="bg-red-600 rounded w-full px-4 text-white font-bold h-16">
-          Find a Time
+        <button
+          className="bg-red-600 rounded w-full px-4 text-white font-bold h-16 hover:bg-red-500"
+          onClick={handleFetchAvailabilities}
+        >
+          {loading ? <CircularProgress color="inherit" /> : 'Find a Time'}
         </button>
       </div>
     </div>
