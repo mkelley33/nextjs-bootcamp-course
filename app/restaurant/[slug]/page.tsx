@@ -7,6 +7,7 @@ import Reviews from './components/Reviews';
 import ReservationCard from './components/ReservationCard';
 import { PrismaClient, Review } from '@prisma/client';
 import { notFound } from 'next/navigation';
+import camelCaseObject from '../../../utils/camelCaseObject';
 
 interface IRestaurant {
   id: number;
@@ -15,6 +16,8 @@ interface IRestaurant {
   description: string;
   slug: string;
   reviews: Review[];
+  open_time: string;
+  close_time: string;
 }
 
 const prisma = new PrismaClient();
@@ -31,6 +34,8 @@ const fetchRestaurantBySlug = async (slug: string): Promise<IRestaurant> => {
       description: true,
       slug: true,
       reviews: true,
+      open_time: true,
+      close_time: true,
     },
   });
   if (!restaurant) notFound();
@@ -55,7 +60,10 @@ export default async function RestaurantDetails({
         <Reviews reviews={reviews} />
       </div>
       <div className="w-[27%] relative text-reg">
-        <ReservationCard />
+        <ReservationCard
+          openTime={restaurant.open_time}
+          closeTime={restaurant.close_time}
+        />
       </div>
     </>
   );
