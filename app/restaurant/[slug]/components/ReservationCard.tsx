@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import { useState } from 'react';
 import useAvailabilities from '../../../../pages/api/hooks/useAvailabilities';
 import { CircularProgress } from '@mui/material';
+import Link from 'next/link';
 export default function ReservationCard({
   openTime,
   closeTime,
@@ -104,10 +105,30 @@ export default function ReservationCard({
         <button
           className="bg-red-600 rounded w-full px-4 text-white font-bold h-16 hover:bg-red-500"
           onClick={handleFetchAvailabilities}
+          disabled={loading}
         >
           {loading ? <CircularProgress color="inherit" /> : 'Find a Time'}
         </button>
       </div>
+      {data && data.length ? (
+        <div className="mt-4">
+          <p className="text-reg">Select a Time</p>
+          <div className="flex flex-wrap mt-2 h-24 overflow-auto">
+            {data.map((time) =>
+              time.available ? (
+                <Link
+                  href={`/reserve/${slug}?date=${day}T${time.time}&partySize=${partySize}`}
+                  className="bg-red-600 cursor-pointer p-2 w-24 text-center text-white mb-3 rounded mr-3"
+                >
+                  <p className="text-small font-bold">{time.time}</p>
+                </Link>
+              ) : (
+                <p className="bg-gray-300 p-2 w-24 text-white mb-3 rounded mr-3"></p>
+              )
+            )}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
