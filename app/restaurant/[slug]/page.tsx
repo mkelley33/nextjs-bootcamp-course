@@ -7,7 +7,6 @@ import Reviews from './components/Reviews';
 import ReservationCard from './components/ReservationCard';
 import { PrismaClient, Review } from '@prisma/client';
 import { notFound } from 'next/navigation';
-import camelCaseObject from '../../../utils/camelCaseObject';
 
 interface IRestaurant {
   id: number;
