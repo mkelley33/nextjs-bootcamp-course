@@ -2,7 +2,6 @@ import Header from './components/Header';
 import Form from './components/Form';
 import { PrismaClient } from '@prisma/client';
 import { notFound } from 'next/navigation';
-import { fetchServerResponse } from 'next/dist/client/components/app-router';
 
 const prisma = new PrismaClient();
 
