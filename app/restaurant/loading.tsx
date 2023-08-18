@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <main>
+    <div>
       <div className="h-96 overflow-hidden animate-pulse bg-slate-200">
         <div className={`bg-center h-full`}></div>
       </div>
@@ -25,6 +25,6 @@ export default function Loading() {
         </div>
       </div>
       Loading...
-    </main>
+    </div>
   );
 }

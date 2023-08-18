@@ -2,7 +2,7 @@ import Header from './components/Header';
 
 export default function Loading() {
   return (
-    <main>
+    <div>
       <Header />
       <div className="py3 px36 mt-10 flex flex-wrap justify-center">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => (
@@ -12,6 +12,6 @@ export default function Loading() {
           ></div>
         ))}
       </div>
-    </main>
+    </div>
   );
 }
