@@ -1,10 +1,12 @@
-import { PrismaClient, Table } from "@prisma/client";
-import { NextApiResponse } from "next";
-import { times } from "../../data";
+import { PrismaClient, Table } from '@prisma/client';
+import { NextApiResponse } from 'next';
+
+import { times } from '../../data';
+import getInvalidDataResponse from '../../utils/getInvalidResponse';
 
 const prisma = new PrismaClient();
 
-export const findAvailabileTables = async ({
+export const findAvailableTables = async ({
   time,
   day,
   res,
@@ -17,17 +19,11 @@ export const findAvailabileTables = async ({
     tables: Table[];
     open_time: string;
     close_time: string;
-  };
+  } | null;
 }) => {
-  const searchTimes = times.find((t) => {
-    return t.time === time;
-  })?.searchTimes;
+  const searchTimes = times.find((t) => t.time === time)?.searchTimes;
 
-  if (!searchTimes) {
-    return res.status(400).json({
-      errorMessage: "Invalid data provided",
-    });
-  }
+  if (!searchTimes) return getInvalidDataResponse(res);
 
   const bookings = await prisma.booking.findMany({
     where: {
@@ -48,12 +44,11 @@ export const findAvailabileTables = async ({
   bookings.forEach((booking) => {
     bookingTablesObj[booking.booking_time.toISOString()] =
       booking.tables.reduce((obj, table) => {
-        return {
-          ...obj,
-          [table.table_id]: true,
-        };
+        return { ...obj, [table.table_id]: true };
       }, {});
   });
+
+  if (!restaurant) return getInvalidDataResponse(res);
 
   const tables = restaurant.tables;
 

@@ -1,5 +1,6 @@
-import { Cuisine, Location, PRICE } from "@prisma/client";
-import Link from "next/link";
+import { Cuisine, Location, PRICE } from '@prisma/client';
+import Link from 'next/link';
+import { ISearchParams } from '../page';
 
 export default function SearchSideBar({
   locations,
@@ -8,23 +9,25 @@ export default function SearchSideBar({
 }: {
   locations: Location[];
   cuisines: Cuisine[];
-  searchParams: { city?: string; cuisine?: string; price?: PRICE };
+  searchParams: ISearchParams;
 }) {
   const prices = [
     {
       price: PRICE.CHEAP,
-      label: "$",
-      className: "border w-full text-reg text-center font-light rounded-l p-2",
+      label: '$',
+      className: 'border w-full text-reg font-light rounded-l p-2 text-center',
     },
     {
       price: PRICE.REGULAR,
-      label: "$$",
-      className: "border w-full text-reg text-center font-light p-2",
+      label: '$$',
+      className:
+        'border-r border-t border-b w-full text-reg font-light p-2 text-center',
     },
     {
       price: PRICE.EXPENSIVE,
-      label: "$$$",
-      className: "border w-full text-reg text-center font-light rounded-r p-2",
+      label: '$$$',
+      className:
+        'border-r border-t border-b w-full text-reg font-light p-2 rounded-r text-center',
     },
   ];
 
@@ -35,14 +38,11 @@ export default function SearchSideBar({
         {locations.map((location) => (
           <Link
             href={{
-              pathname: "/search",
-              query: {
-                ...searchParams,
-                city: location.name,
-              },
+              pathname: '/search',
+              query: { ...searchParams, city: location.name },
             }}
-            className="font-light text-reg capitalize"
             key={location.id}
+            className="font-light text-reg capitalize"
           >
             {location.name}
           </Link>
@@ -53,14 +53,11 @@ export default function SearchSideBar({
         {cuisines.map((cuisine) => (
           <Link
             href={{
-              pathname: "/search",
-              query: {
-                ...searchParams,
-                cuisine: cuisine.name,
-              },
+              pathname: '/search',
+              query: { ...searchParams, cuisine: cuisine.name },
             }}
-            className="font-light text-reg capitalize"
             key={cuisine.id}
+            className="font-light text-reg capitalize"
           >
             {cuisine.name}
           </Link>
@@ -72,11 +69,8 @@ export default function SearchSideBar({
           {prices.map(({ price, label, className }) => (
             <Link
               href={{
-                pathname: "/search",
-                query: {
-                  ...searchParams,
-                  price,
-                },
+                pathname: '/search',
+                query: { ...searchParams, price },
               }}
               className={className}
             >

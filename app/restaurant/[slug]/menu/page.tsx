@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
-import Menu from "../components/Menu";
-import RestaurantNavBar from "../components/RestaurantNavBar";
+import RestaurantNavBar from '../components/RestaurantNavBar';
+import Menu from '../components/Menu';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -13,21 +13,12 @@ const fetchRestaurantMenu = async (slug: string) => {
       items: true,
     },
   });
-
-  if (!restaurant) {
-    throw new Error();
-  }
-
+  if (!restaurant) throw Error();
   return restaurant.items;
 };
 
-export default async function RestaurantMenu({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function Page({ params }: { params: { slug: string } }) {
   const menu = await fetchRestaurantMenu(params.slug);
-
   return (
     <>
       <div className="bg-white w-[100%] rounded p-3 shadow">

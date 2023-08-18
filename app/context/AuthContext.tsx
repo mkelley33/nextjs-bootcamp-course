@@ -1,10 +1,17 @@
-"use client";
+'use client';
 
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import React, { useState, createContext, useEffect } from "react";
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
+import camelCaseObject from '../../utils/camelCaseObject';
 
-interface User {
+interface IUser {
   id: number;
   firstName: string;
   lastName: string;
@@ -13,17 +20,23 @@ interface User {
   phone: string;
 }
 
-interface State {
+interface IState {
   loading: boolean;
   error: string | null;
-  data: User | null;
+  data: IUser | null;
 }
 
-interface AuthState extends State {
-  setAuthState: React.Dispatch<React.SetStateAction<State>>;
+interface IAuthState extends IState {
+  setAuthState: Dispatch<
+    SetStateAction<{
+      loading: boolean;
+      data: null;
+      error: null;
+    }>
+  >;
 }
 
-export const AuthenticationContext = createContext<AuthState>({
+export const AuthenticationContext = createContext<IAuthState>({
   loading: false,
   error: null,
   data: null,
@@ -35,21 +48,20 @@ export default function AuthContext({
 }: {
   children: React.ReactNode;
 }) {
-  const [authState, setAuthState] = useState<State>({
+  const [authState, setAuthState] = useState({
     loading: true,
     data: null,
     error: null,
   });
 
   const fetchUser = async () => {
-    setAuthState({
-      data: null,
-      error: null,
-      loading: true,
-    });
     try {
-      const jwt = getCookie("jwt");
-
+      setAuthState({
+        data: null,
+        error: null,
+        loading: true,
+      });
+      const jwt = getCookie('jwt');
       if (!jwt) {
         return setAuthState({
           data: null,
@@ -58,16 +70,16 @@ export default function AuthContext({
         });
       }
 
-      const response = await axios.get("http://localhost:3000/api/auth/me", {
+      const response = await axios.get('http://localhost:3000/api/auth/me', {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
       });
 
-      axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
 
       setAuthState({
-        data: response.data,
+        data: camelCaseObject(response.data) as any,
         error: null,
         loading: false,
       });
@@ -85,12 +97,7 @@ export default function AuthContext({
   }, []);
 
   return (
-    <AuthenticationContext.Provider
-      value={{
-        ...authState,
-        setAuthState,
-      }}
-    >
+    <AuthenticationContext.Provider value={{ ...authState, setAuthState }}>
       {children}
     </AuthenticationContext.Provider>
   );

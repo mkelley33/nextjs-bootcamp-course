@@ -1,6 +1,6 @@
-import React from "react";
+import { ChangeEvent } from 'react';
 
-interface Props {
+interface IProps {
   inputs: {
     firstName: string;
     lastName: string;
@@ -9,7 +9,7 @@ interface Props {
     city: string;
     password: string;
   };
-  handleChangeInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeInput: (e: ChangeEvent<HTMLInputElement>) => void;
   isSignin: boolean;
 }
 
@@ -17,7 +17,7 @@ export default function AuthModalInputs({
   inputs,
   handleChangeInput,
   isSignin,
-}: Props) {
+}: IProps) {
   return (
     <div>
       {isSignin ? null : (
@@ -42,7 +42,7 @@ export default function AuthModalInputs({
       )}
       <div className="my-3 flex justify-between text-sm">
         <input
-          type="text"
+          type="email"
           className="border rounded p-2 py-3 w-full"
           placeholder="Email"
           value={inputs.email}
