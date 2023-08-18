@@ -1,8 +1,18 @@
 'use client';
 
-import { ChangeEvent, useEffect, useState } from 'react';
+import { CircularProgress } from '@mui/material';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import useReservation from '../../../../pages/api/hooks/useReservation';
 
-export default function Form() {
+export default function Form({
+  slug,
+  date,
+  partySize,
+}: {
+  slug: string;
+  date: string;
+  partySize: string;
+}) {
   const [inputs, setInputs] = useState({
     bookerFirstName: '',
     bookerLastName: '',
@@ -12,11 +22,14 @@ export default function Form() {
     bookerRequest: '',
   });
 
+  const [day, time] = date.split('T');
   const [disabled, setDisabled] = useState(true);
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
+
+  const { error, loading, createReservation } = useReservation();
 
   useEffect(() => {
     const { bookerFirstName, bookerLastName, bookerPhone, bookerEmail } =
@@ -26,10 +39,19 @@ export default function Form() {
     );
   }, [inputs]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setDisabled(true);
-
-    setDisabled(false);
+    const booking = await createReservation({
+      slug,
+      partySize,
+      time,
+      day,
+      ...inputs,
+    });
+    if (!error) {
+      setDisabled(false);
+    }
   };
 
   return (
@@ -86,10 +108,14 @@ export default function Form() {
         value={inputs.bookerRequest}
       />
       <button
-        disabled={disabled}
+        disabled={disabled || loading}
         className="bg-red-600 w-full p-3 text-white font-bold rounded disabled:bg-gray-300"
       >
-        Complete reservation
+        {loading ? (
+          <CircularProgress color="inherit" />
+        ) : (
+          'Complete reservation'
+        )}
       </button>
       <p className="mt-4 text-sm">
         By clicking “Complete reservation” you agree to the OpenTable Terms of
